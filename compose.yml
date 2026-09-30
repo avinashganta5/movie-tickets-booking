@@ -1,0 +1,123 @@
+services:
+
+  # =====================================
+  # DATABASE
+  # =====================================
+  mysql:
+    build:
+      context: ./database
+    image: movie-mysql
+    container_name: movie-mysql
+
+    expose:
+      - "3306"
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      # MYSQL_DATABASE: movie_booking
+      # MYSQL_USER: movie_user
+      # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+    networks:
+      - db-network
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+    restart: unless-stopped
+
+
+  # =====================================
+  # BACKEND
+  # =====================================
+  movie-api:
+    build:
+      context: ./backend
+    image: movie-api
+    container_name: movie-api
+
+    expose:
+      - "3000"
+
+    environment:
+      NODE_ENV: production
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: movie_booking
+      DB_USER: movie_user
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+
+    depends_on:
+      - mysql
+
+    networks:
+      - api-network
+      - db-network
+
+    restart: unless-stopped
+
+
+  # =====================================
+  # FRONTEND
+  # =====================================
+  movie-web:
+    build:
+      context: ./frontend
+    image: movie-web
+    container_name: movie-web
+
+    expose:
+      - "80"
+
+    networks:
+      - web-network
+
+    restart: unless-stopped
+
+
+  # =====================================
+  # NGINX
+  # =====================================
+  movie-nginx:
+    build:
+      context: ./nginx
+    image: movie-nginx
+    container_name: movie-nginx
+
+    ports:
+      - "80:80"
+
+    depends_on:
+      - movie-web
+      - movie-api
+
+    networks:
+      - web-network
+      - api-network
+
+    restart: unless-stopped
+
+
+# =====================================
+# SECURE NETWORKS
+# =====================================
+
+networks:
+
+  web-network:
+    driver: bridge
+
+  api-network:
+    driver: bridge
+
+  db-network:
+    driver: bridge
+    internal: true
+
+
+# =====================================
+# PERSISTENT MYSQL STORAGE
+# =====================================
+
+volumes:
+  mysql-data:

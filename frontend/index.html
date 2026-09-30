@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MovieBook - Movie Tickets</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="container navbar-inner">
+
+        <a href="#" class="logo" onclick="showHome()">
+            <span class="logo-icon">▶</span>
+            MovieBook
+        </a>
+
+        <nav>
+            <button
+                class="nav-button"
+                onclick="showHome()"
+            >
+                Movies
+            </button>
+
+            <button
+                class="nav-button"
+                onclick="openBookingLookup()"
+            >
+                My Booking
+            </button>
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- ================================= -->
+    <!-- HOME -->
+    <!-- ================================= -->
+
+    <section id="homeSection">
+
+        <div class="hero">
+
+            <div class="container hero-content">
+
+                <div class="hero-text">
+
+                    <span class="hero-label">
+                        NOW SHOWING
+                    </span>
+
+                    <h1>
+                        Your next movie
+                        <span>starts here.</span>
+                    </h1>
+
+                    <p>
+                        Choose a movie, pick your seats,
+                        and book your tickets in seconds.
+                    </p>
+
+                    <button
+                        class="primary-button"
+                        onclick="scrollToMovies()"
+                    >
+                        Browse Movies
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <section class="container movies-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="section-label">
+                        CINEMA
+                    </span>
+
+                    <h2>Now Showing</h2>
+                </div>
+
+            </div>
+
+            <div
+                id="moviesContainer"
+                class="movies-grid"
+            >
+                <div class="loading">
+                    Loading movies...
+                </div>
+            </div>
+
+        </section>
+
+    </section>
+
+
+    <!-- ================================= -->
+    <!-- SHOW SELECTION -->
+    <!-- ================================= -->
+
+    <section
+        id="showSection"
+        class="container page-section hidden"
+    >
+
+        <button
+            class="back-button"
+            onclick="showHome()"
+        >
+            ← Back to Movies
+        </button>
+
+        <div id="selectedMovie"></div>
+
+        <div class="show-selection">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-label">
+                        SELECT A SHOW
+                    </span>
+
+                    <h2>Choose Date & Time</h2>
+                </div>
+            </div>
+
+            <div
+                id="showDates"
+                class="date-list"
+            ></div>
+
+            <div
+                id="showsContainer"
+                class="shows-grid"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================= -->
+    <!-- SEAT SELECTION -->
+    <!-- ================================= -->
+
+    <section
+        id="seatSection"
+        class="container page-section hidden"
+    >
+
+        <button
+            class="back-button"
+            onclick="backToShows()"
+        >
+            ← Back to Showtimes
+        </button>
+
+        <div
+            id="selectedShow"
+            class="selected-show-card"
+        ></div>
+
+
+        <div class="seat-layout">
+
+            <div class="seat-area">
+
+                <div class="screen">
+                    SCREEN
+                </div>
+
+                <div
+                    id="seatContainer"
+                    class="seat-container"
+                ></div>
+
+                <div class="seat-legend">
+
+                    <div>
+                        <span class="legend-seat available"></span>
+                        Available
+                    </div>
+
+                    <div>
+                        <span class="legend-seat selected"></span>
+                        Selected
+                    </div>
+
+                    <div>
+                        <span class="legend-seat booked"></span>
+                        Booked
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <aside class="booking-summary">
+
+                <h3>Booking Summary</h3>
+
+                <div class="summary-row">
+                    <span>Movie</span>
+                    <strong id="summaryMovie">
+                        -
+                    </strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Date</span>
+                    <strong id="summaryDate">
+                        -
+                    </strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Time</span>
+                    <strong id="summaryTime">
+                        -
+                    </strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Seats</span>
+                    <strong id="summarySeats">
+                        None
+                    </strong>
+                </div>
+
+                <div class="summary-divider"></div>
+
+                <div class="summary-total">
+                    <span>Total</span>
+
+                    <strong id="summaryTotal">
+                        ₹0
+                    </strong>
+                </div>
+
+                <button
+                    id="continueButton"
+                    class="primary-button full-width"
+                    disabled
+                    onclick="openCustomerModal()"
+                >
+                    Continue
+                </button>
+
+            </aside>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================= -->
+    <!-- BOOKING LOOKUP -->
+    <!-- ================================= -->
+
+    <section
+        id="lookupSection"
+        class="container page-section hidden"
+    >
+
+        <button
+            class="back-button"
+            onclick="showHome()"
+        >
+            ← Back
+        </button>
+
+        <div class="lookup-card">
+
+            <span class="section-label">
+                BOOKING
+            </span>
+
+            <h2>Find Your Booking</h2>
+
+            <p>
+                Enter your booking reference to view
+                your ticket details.
+            </p>
+
+            <div class="lookup-form">
+
+                <input
+                    id="bookingReferenceInput"
+                    type="text"
+                    placeholder="Example: MOV-A1B2C3D4"
+                >
+
+                <button
+                    class="primary-button"
+                    onclick="lookupBooking()"
+                >
+                    Find Booking
+                </button>
+
+            </div>
+
+            <div id="lookupResult"></div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================================= -->
+<!-- CUSTOMER MODAL -->
+<!-- ================================= -->
+
+<div
+    id="customerModal"
+    class="modal hidden"
+>
+
+    <div class="modal-overlay" onclick="closeCustomerModal()"></div>
+
+    <div class="modal-card">
+
+        <button
+            class="modal-close"
+            onclick="closeCustomerModal()"
+        >
+            ×
+        </button>
+
+        <span class="section-label">
+            FINAL STEP
+        </span>
+
+        <h2>Customer Details</h2>
+
+        <p class="modal-description">
+            Enter your details to confirm your booking.
+        </p>
+
+        <form
+            id="bookingForm"
+            onsubmit="submitBooking(event)"
+        >
+
+            <div class="form-group">
+
+                <label for="customerName">
+                    Full Name
+                </label>
+
+                <input
+                    id="customerName"
+                    type="text"
+                    required
+                    minlength="2"
+                    placeholder="Your name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="customerEmail">
+                    Email
+                </label>
+
+                <input
+                    id="customerEmail"
+                    type="email"
+                    required
+                    placeholder="you@example.com"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="customerPhone">
+                    Phone
+                </label>
+
+                <input
+                    id="customerPhone"
+                    type="tel"
+                    placeholder="Your phone number"
+                >
+
+            </div>
+
+
+            <div
+                id="bookingFormError"
+                class="form-error hidden"
+            ></div>
+
+
+            <button
+                id="confirmBookingButton"
+                type="submit"
+                class="primary-button full-width"
+            >
+                Confirm Booking
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ================================= -->
+<!-- CONFIRMATION MODAL -->
+<!-- ================================= -->
+
+<div
+    id="confirmationModal"
+    class="modal hidden"
+>
+
+    <div class="modal-overlay"></div>
+
+    <div class="confirmation-card">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <span class="section-label">
+            BOOKING CONFIRMED
+        </span>
+
+        <h2>Your tickets are booked!</h2>
+
+        <p>
+            Save your booking reference for future use.
+        </p>
+
+        <div class="booking-reference">
+
+            <span>BOOKING REFERENCE</span>
+
+            <strong id="confirmationReference">
+                -
+            </strong>
+
+        </div>
+
+        <div
+            id="confirmationDetails"
+            class="confirmation-details"
+        ></div>
+
+        <button
+            class="primary-button full-width"
+            onclick="closeConfirmation()"
+        >
+            Done
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================================= -->
+<!-- TOAST -->
+<!-- ================================= -->
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
