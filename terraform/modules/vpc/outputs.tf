@@ -11,7 +11,7 @@ output "vpc_cidr" {
 output "public_subnet_ids" {
   description = "IDs of public subnets"
   value       = {
-    for name, subnet in aws_subnet.public :
+    for name, subnet in aws_subnet.public_subnets :
     name => subnet.id
   }
 }
@@ -19,7 +19,7 @@ output "public_subnet_ids" {
 output "private_subnet_ids" {
   description = "IDs of private subnets"
   value       = {
-    for name, subnet in aws_subnet.private :
+    for name, subnet in aws_subnet.private_subnets :
     name => subnet.id
   }
 }
@@ -36,10 +36,10 @@ output "nat_gateway_id" {
 
 output "public_route_table_id" {
   description = "Public route table ID"
-  value       = aws_route_table.public.id
+  value       = aws_route_table.public_rt.id
 }
 
 output "private_route_table_id" {
   description = "Private route table ID"
-  value       = aws_route_table.private.id
+  value       = aws_route_table.private_rt.id
 }
