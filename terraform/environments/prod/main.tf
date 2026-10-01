@@ -34,7 +34,7 @@ module "ec2" {
 }
 
 module "sg" {
-  source = "../../modules/sg"
+  source = "../../modules/security-groups"
 
   vpc_id = module.vpc.vpc_id
 
