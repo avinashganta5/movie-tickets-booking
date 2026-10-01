@@ -28,18 +28,18 @@ private_subnets = {
 
 ec2_instances = {
   web-1 = {
-    ami_id           = "ami-xxxxxxxxxxxxxxxxx"
+    ami_id           = "ami-0d27e0fb3bac4d724"
     instance_type    = "t3.micro"
     subnet_name      = "public-1"
-    key_name         = "my-key"
+    key_name         = "nginx"
     root_volume_size = 20
   }
 
   web-2 = {
-    ami_id           = "ami-xxxxxxxxxxxxxxxxx"
+    ami_id           = "ami-0d27e0fb3bac4d724"
     instance_type    = "t3.micro"
     subnet_name      = "public-2"
-    key_name         = "my-key"
+    key_name         = "nginx"
     root_volume_size = 20
   }
 }
